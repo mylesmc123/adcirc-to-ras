@@ -8,19 +8,20 @@
             "name": "Downstream DSS: LWI - Laura",
             "type": "debugpy",
             "request": "launch",
-            "program": "ras_extract_downstream_timeseries_from_adcirc.py",
+            "program": "adcirc2hec_surge.py",
             "console": "integratedTerminal",
             "justMyCode": true,
             "args": [
                 "--file",
-                // "Z:\\RTF_Amite_08152022\\fort.63.nc",
                 "/mnt/w/projects/p00542_cpra_2020_lwi_t01/adcirc_simulations/v1/2020-laura/storm/fort.63.nc",
                 "--dir",
                 "/mnt/v/projects/p00832_ocd_2023_latz_hr/01_processing/GIS/Coastal_Segments/v20240312/textfiles",
                 "--outdir",
-                "output",
+                "output/ds",
                 "--format",
-                "dss"
+                "dss",
+                "--event",
+                "Laura",
             ],
         },
         {
@@ -33,7 +34,8 @@
                 "--input",
                 "/mnt/w/projects/p00542_cpra_2020_lwi_t01/adcirc_simulations/v1/2020-laura/storm/fort.74.nc",
                 "--output",
-                "/mnt/v/projects/p00832_ocd_2023_latz_hr/01_processing/ADCIRC2RAS/ras_wind_laura_refTime_20200731_0000.nc",
+                // "/mnt/v/projects/p00832_ocd_2023_latz_hr/01_processing/ADCIRC2RAS/ras_wind_laura_refTime_20200731_0000.nc",
+                "output/wind/ras_wind_laura.nc",
                 "--resolution",
                 "0.1", 
                 "--bounds", 
@@ -41,9 +43,6 @@
                 "28.5", 
                 "-87.9", 
                 "33", 
-                "--reference-time", 
-                // "2020-08-18 00:20:00", // taken from fort.74.nc first ordinate of time which is not equal to the reference time of the time variable.
-                "2020-07-31 00:00:00", // taken from fort.74.nc reference time
             ],
         },
         {
@@ -63,9 +62,7 @@
                 "-95.33", 
                 "29", 
                 "-93.5", 
-                "30", 
-                "--reference-time", 
-                "2017-08-18 00:30:00", 
+                "30",
                 "--mesh", 
                 "/mnt/w/users/mmcmanus/adcirc_to_ras/S2G_new_lidar_full_roads_PAOF_NoProjects_v7.grd",
             ],
@@ -87,9 +84,7 @@
                 "-95", 
                 "28.3", 
                 "-88", 
-                "30.7", 
-                "--reference-time", 
-                "2021-07-27 12:00:00", // taken from fort.74.nc first ordinate of time which is not equal to the reference time of the time variable.
+                "30.7",
             ],
         }
     ]

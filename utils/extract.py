@@ -407,7 +407,7 @@ class Extract:
                 )
 
     def __write_output_dss(
-        self, output_file: str, time: np.ndarray, data: np.ndarray
+        self, output_file: str, time: np.ndarray, data: np.ndarray, aPart: str
     ) -> None:
         from pydsstools.heclib.dss import HecDss
         from pydsstools.core import TimeSeriesContainer
@@ -421,7 +421,7 @@ class Extract:
         head, tail = os.path.split(output_file)
         # aPart = f"RAS_Model:{RFC_Gages_dict[gage][1]}"
         bPart = f"{tail.split('.')[0]}"
-        pathname = f"//{bPart}/STAGE//IR-MONTH/ADCIRC/"
+        pathname = f"/{aPart}/{bPart}/STAGE//IR-MONTH/ADCIRC/"
         tsc = TimeSeriesContainer()
         tsc.pathname = pathname
         # tsc.units ="m"
@@ -575,7 +575,7 @@ class Extract:
             del hf[hdf_temp_path]
         
 
-    def extract(self, output_file, output_format, hdf_fn=None, ras_startTime=None, ras_endTime=None) -> None:
+    def extract(self, output_file, output_format, aPart=None, hdf_fn=None, ras_startTime=None, ras_endTime=None, ) -> None:
 
         if "transpose" in self.__variable:
             time, data = self.__extract_from_transpose_variable()
@@ -587,6 +587,6 @@ class Extract:
         elif output_format == "csv":
             self.__write_output_csv(output_file, time, data)
         elif output_format == "dss":
-            self.__write_output_dss(output_file, time, data)
+            self.__write_output_dss(output_file, time, data, aPart)
         elif output_format == "ras":
             self.__write_output_hdf(output_file, time, data, hdf_fn, ras_startTime, ras_endTime)

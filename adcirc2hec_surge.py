@@ -67,6 +67,13 @@ def main():
         default="netcdf",
         type=str,
     )
+    p.add_argument(
+        "--event",
+        help="Event name to use for A-part of output DSS files",
+        required=False,
+        default="",
+        type=str,
+    )
 
     args = p.parse_args()
 
@@ -117,7 +124,7 @@ def main():
         # else if not ras output, extract using less arguments.
         else:
             extractor = Extract(args.file, pointFile, coldstart_utc)
-            extractor.extract(outputFile, args.format)
+            extractor.extract(outputFile, args.format, args.event)
 
 
 if __name__ == "__main__":
