@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: Laura - ras_extract_downstream_timeseries_from_adcirc.py",
+            "name": "Downstream DSS: LWI - Laura",
             "type": "debugpy",
             "request": "launch",
             "program": "ras_extract_downstream_timeseries_from_adcirc.py",
@@ -23,5 +23,74 @@
                 "dss"
             ],
         },
+        {
+            "name": "Wind ADCIRC nc to RAS nc: LWI - Laura",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "adcirc2hec_wind.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--input",
+                "/mnt/w/projects/p00542_cpra_2020_lwi_t01/adcirc_simulations/v1/2020-laura/storm/fort.74.nc",
+                "--output",
+                "/mnt/v/projects/p00832_ocd_2023_latz_hr/01_processing/ADCIRC2RAS/ras_wind_laura_refTime_20200731_0000.nc",
+                "--resolution",
+                "0.1", 
+                "--bounds", 
+                "-95", 
+                "28.5", 
+                "-87.9", 
+                "33", 
+                "--reference-time", 
+                // "2020-08-18 00:20:00", // taken from fort.74.nc first ordinate of time which is not equal to the reference time of the time variable.
+                "2020-07-31 00:00:00", // taken from fort.74.nc reference time
+            ],
+        },
+        {
+            "name": "Wind ASCII to NetCDF: GLO - Harvey",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "adcirc2hec_wind.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--input",
+                "/mnt/v/projects/p00659_dec_glo_phase3/00_collection/ADCIRC_CTXCS_S2G_CSTORM/CTXCS_TP_0011_HIS_Tides_1_SLC_0_RFC_0_WAV_1_GCP_S2G03BE01_fort.74",
+                "--output",
+                "/mnt/v/projects/p00659_dec_glo_phase3/00_collection/ADCIRC_CTXCS_S2G_CSTORM/CTXCS_TP_0011_HIS_Tides_1_SLC_0_RFC_0_WAV_1_GCP_S2G03BE01_fort.74_5.nc",
+                "--resolution",
+                "0.1", 
+                "--bounds", 
+                "-95.33", 
+                "29", 
+                "-93.5", 
+                "30", 
+                "--reference-time", 
+                "2017-08-18 00:30:00", 
+                "--mesh", 
+                "/mnt/w/users/mmcmanus/adcirc_to_ras/S2G_new_lidar_full_roads_PAOF_NoProjects_v7.grd",
+            ],
+        },
+        {
+            "name": "Wind ADCIRC nc to RAS nc: SLAMM - Ida",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "adcirc2hec_wind.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--input",
+                "/mnt/w/users/mmcmanus/SLaMM_2021/wind/Idafort.74.nc",
+                "--output",
+                "/mnt/v/projects/p00832_ocd_2023_latz_hr/01_processing/ADCIRC2RAS/ras_wind_Ida_test.nc",
+                "--resolution",
+                "0.1", 
+                "--bounds", 
+                "-95", 
+                "28.3", 
+                "-88", 
+                "30.7", 
+                "--reference-time", 
+                "2021-07-27 12:00:00", // taken from fort.74.nc first ordinate of time which is not equal to the reference time of the time variable.
+            ],
+        }
     ]
 }
