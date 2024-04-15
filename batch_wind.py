@@ -1,6 +1,8 @@
 # Produce wind netcdf and downstream surge timeseries for each cal/val event in an excel sheet
 # %%
 import pandas as pd
+import adcirc2hec_wind
+from tqdm import tqdm
 
 # %%
 # open excel sheet
@@ -24,13 +26,26 @@ df = df[~df["ADCIRC Data on Rougarou"].str.contains(",")]
 df = df.reset_index(drop=True)
 df["ADCIRC Data on Rougarou"]
 # %%
-# protoype: get the ADCIRC file's for wind (74) and surge (63) for the first event
-# get the first event's ADCIRC directory
-adcirc_dir = df["ADCIRC Data on Rougarou"][0]
-# reformat to WSL path
-adcirc_dir = adcirc_dir.replace("/twi/work", "/mnt/w")
-# get filenames for wind and surge
-wind_fn = f"{adcirc_dir}/storm/fort.74.nc"
-surge_fn = f"{adcirc_dir}/storm/fort.63.nc"
+# input parameters
+mesh = None
+resolution = 0.1
+x_min = -95
+y_min = 28.5
+x_max = -87.9
+y_max = 33 
+
+# batch loop - for each row in df.
+for i in tqdm(range(len(df))):
+
+    adcirc_dir = df["ADCIRC Data on Rougarou"][i]
+    print(adcirc_dir)
+    # reformat to WSL path
+    adcirc_dir = adcirc_dir.replace("/twi/work", "/mnt/w")
+    adcirc_wind_fn = f"{adcirc_dir}/storm/fort.74.nc"
+    event = df["Name"][i+plus]
+    print(event)
+    ras_wind_output = f'output/wind/{event}_wind_ras.nc'
+    r = adcirc2hec_wind.HecWindFile(adcirc_wind_fn, mesh, ras_wind_output)
+    r.write(resolution, x_min, y_min, x_max, y_max)
+
 # %%
-# call adcirc2hec_wind.py and adcirc2hec_surge.py

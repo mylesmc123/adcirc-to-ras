@@ -1,91 +1,98 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "Downstream DSS: LWI - Laura",
-            "type": "debugpy",
-            "request": "launch",
-            "program": "adcirc2hec_surge.py",
-            "console": "integratedTerminal",
-            "justMyCode": true,
-            "args": [
-                "--file",
-                "/mnt/w/projects/p00542_cpra_2020_lwi_t01/adcirc_simulations/v1/2020-laura/storm/fort.63.nc",
-                "--dir",
-                "/mnt/v/projects/p00832_ocd_2023_latz_hr/01_processing/GIS/Coastal_Segments/v20240312/textfiles",
-                "--outdir",
-                "output/ds",
-                "--format",
-                "dss",
-                "--event",
-                "Laura",
-            ],
-        },
-        {
-            "name": "Wind ADCIRC nc to RAS nc: LWI - Laura",
-            "type": "debugpy",
-            "request": "launch",
-            "program": "adcirc2hec_wind.py",
-            "console": "integratedTerminal",
-            "args": [
-                "--input",
-                "/mnt/w/projects/p00542_cpra_2020_lwi_t01/adcirc_simulations/v1/2020-laura/storm/fort.74.nc",
-                "--output",
-                // "/mnt/v/projects/p00832_ocd_2023_latz_hr/01_processing/ADCIRC2RAS/ras_wind_laura_refTime_20200731_0000.nc",
-                "output/wind/ras_wind_laura.nc",
-                "--resolution",
-                "0.1", 
-                "--bounds", 
-                "-95", 
-                "28.5", 
-                "-87.9", 
-                "33", 
-            ],
-        },
-        {
-            "name": "Wind ASCII to NetCDF: GLO - Harvey",
-            "type": "debugpy",
-            "request": "launch",
-            "program": "adcirc2hec_wind.py",
-            "console": "integratedTerminal",
-            "args": [
-                "--input",
-                "/mnt/v/projects/p00659_dec_glo_phase3/00_collection/ADCIRC_CTXCS_S2G_CSTORM/CTXCS_TP_0011_HIS_Tides_1_SLC_0_RFC_0_WAV_1_GCP_S2G03BE01_fort.74",
-                "--output",
-                "/mnt/v/projects/p00659_dec_glo_phase3/00_collection/ADCIRC_CTXCS_S2G_CSTORM/CTXCS_TP_0011_HIS_Tides_1_SLC_0_RFC_0_WAV_1_GCP_S2G03BE01_fort.74_5.nc",
-                "--resolution",
-                "0.1", 
-                "--bounds", 
-                "-95.33", 
-                "29", 
-                "-93.5", 
-                "30",
-                "--mesh", 
-                "/mnt/w/users/mmcmanus/adcirc_to_ras/S2G_new_lidar_full_roads_PAOF_NoProjects_v7.grd",
-            ],
-        },
-        {
-            "name": "Wind ADCIRC nc to RAS nc: SLAMM - Ida",
-            "type": "debugpy",
-            "request": "launch",
-            "program": "adcirc2hec_wind.py",
-            "console": "integratedTerminal",
-            "args": [
-                "--input",
-                "/mnt/w/users/mmcmanus/SLaMM_2021/wind/Idafort.74.nc",
-                "--output",
-                "/mnt/v/projects/p00832_ocd_2023_latz_hr/01_processing/ADCIRC2RAS/ras_wind_Ida_test.nc",
-                "--resolution",
-                "0.1", 
-                "--bounds", 
-                "-95", 
-                "28.3", 
-                "-88", 
-                "30.7",
-            ],
-        }
-    ]
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python Debugger: Current File",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Downstream DSS: LWI - Laura",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "adcirc2hec_surge.py",
+      "console": "integratedTerminal",
+      "justMyCode": true,
+      "args": [
+        "--file",
+        "/mnt/w/projects/p00542_cpra_2020_lwi_t01/adcirc_simulations/v1/2020-laura/storm/fort.63.nc",
+        "--dir",
+        "/mnt/v/projects/p00832_ocd_2023_latz_hr/01_processing/GIS/Coastal_Segments/v20240412/textfiles",
+        "--outdir",
+        "output/ds",
+        "--format",
+        "dss",
+        "--event",
+        "Laura"
+      ]
+    },
+    {
+      "name": "Wind ADCIRC nc to RAS nc: LWI - Laura",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "adcirc2hec_wind.py",
+      "console": "integratedTerminal",
+      "args": [
+        "--input",
+        "/mnt/w/projects/p00542_cpra_2020_lwi_t01/adcirc_simulations/v1/2020-laura/storm/fort.74.nc",
+        "--output",
+        // "/mnt/v/projects/p00832_ocd_2023_latz_hr/01_processing/ADCIRC2RAS/ras_wind_laura_refTime_20200731_0000.nc",
+        "output/wind/ras_wind_laura.nc",
+        "--resolution",
+        "0.1",
+        "--bounds",
+        "-95",
+        "28.5",
+        "-87.9",
+        "33"
+      ]
+    },
+    {
+      "name": "Wind ASCII to NetCDF: GLO - Harvey",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "adcirc2hec_wind.py",
+      "console": "integratedTerminal",
+      "args": [
+        "--input",
+        "/mnt/v/projects/p00659_dec_glo_phase3/00_collection/ADCIRC_CTXCS_S2G_CSTORM/CTXCS_TP_0011_HIS_Tides_1_SLC_0_RFC_0_WAV_1_GCP_S2G03BE01_fort.74",
+        "--output",
+        "/mnt/v/projects/p00659_dec_glo_phase3/00_collection/ADCIRC_CTXCS_S2G_CSTORM/CTXCS_TP_0011_HIS_Tides_1_SLC_0_RFC_0_WAV_1_GCP_S2G03BE01_fort.74_5.nc",
+        "--resolution",
+        "0.1",
+        "--bounds",
+        "-95.33",
+        "29",
+        "-93.5",
+        "30",
+        "--mesh",
+        "/mnt/w/users/mmcmanus/adcirc_to_ras/S2G_new_lidar_full_roads_PAOF_NoProjects_v7.grd"
+      ]
+    },
+    {
+      "name": "Wind ADCIRC nc to RAS nc: SLAMM - Ida",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "adcirc2hec_wind.py",
+      "console": "integratedTerminal",
+      "args": [
+        "--input",
+        "/mnt/w/users/mmcmanus/SLaMM_2021/wind/Idafort.74.nc",
+        "--output",
+        "/mnt/v/projects/p00832_ocd_2023_latz_hr/01_processing/ADCIRC2RAS/ras_wind_Ida_test.nc",
+        "--resolution",
+        "0.1",
+        "--bounds",
+        "-95",
+        "28.3",
+        "-88",
+        "30.7"
+      ]
+    }
+  ]
 }

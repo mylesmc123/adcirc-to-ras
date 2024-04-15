@@ -519,8 +519,9 @@ class HecWindFile:
             mesh = AdcircMesh(self.__mesh_file)
 
         n_steps = dataset.n_time_steps()
-
-        reference_time = dataset.ref_time.split(" ")[-2:]
+        reference_time = dataset._AdcircResult__ref_time.split(" ")[-2:]
+        reference_time = " ".join(reference_time)
+        reference_time = datetime.strptime(reference_time, "%Y-%m-%d %H:%M:%S")
 
         # ...Generate blocks of the output raster
         xx = np.linspace(x_min, x_max, num=int((x_max - x_min) / x_resolution + 1))
@@ -668,12 +669,6 @@ def adcirc2hec_wind_main():
         nargs=4,
         required=True,
         type=float,
-    )
-    parser.add_argument(
-        "--reference-time",
-        help="Reference time for the ADCIRC simulation",
-        required=True,
-        type=datetime.fromisoformat,
     )
     parser.add_argument(
         "--mesh",
