@@ -1,0 +1,62 @@
+# Use the vortex Jython api to convert nc to dss. Requires HEC-HMS or HEC-Vortex installation. This was run on windows.
+
+from mil.army.usace.hec.vortex.io import BatchImporter
+from mil.army.usace.hec.vortex.geo import WktFactory
+import glob
+import os
+
+# cd C:\Apps\HEC-HMS-4.10-beta.9
+# HEC-HMS.cmd -script "C:\py\lwi_jpm_hms_runner\vortex_import_JPM_Rain.jy"
+
+variables = ['wind_u', 'wind_v']
+
+# clip_shp = r"Z:\LWI\EJPM-OS-Param-Rainfall-Tests\AmiteBasinShape.shp"
+wkt = 'PROJCS["NAD_1983_StatePlane_Louisiana_South_FIPS_1702_Feet",GEOGCS["GCS_North_American_1983",DATUM["D_North_American_1983",SPHEROID["GRS_1980",6378137.0,298.257222101]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Lambert_Conformal_Conic"],PARAMETER["False_Easting",3280833.333333333],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",-91.33333333333333],PARAMETER["Standard_Parallel_1",29.3],PARAMETER["Standard_Parallel_2",30.7],PARAMETER["Latitude_Of_Origin",28.5],UNIT["Foot_US",0.3048006096012192]]'
+
+
+geo_options = {
+    # 'pathToShp': clip_shp,
+    'targetCellSize': '2000',
+    # 'targetWkt': WktFactory.shg(),
+    'targetWkt': wkt,
+    'resamplingMethod': 'Bilinear'
+}
+
+# events = ['2004_MATTHEW', '2005_RITA', '2012_ISAAC']
+# in_dir = r"V:\projects\p00542_cpra_2020_lwi_t10\00_collection\data\rainfall\temp"
+in_dir = r"/home/mmc/py/adcirc_to_ras/output/wind/"
+f = glob.glob(in_dir+"/*.nc")
+
+out_dir = r"/home/mmc/py/adcirc_to_ras/output/wind/dss"
+
+for afile in f:
+    head, tail = os.path.split(afile)
+    in_files = [afile]
+    stormId = tail.split("_wind")[0].replace("-", "_")
+    destination = out_dir + '/' + tail.split(".")[0]+".dss"  
+    
+    write_options = {
+    'partA': stormId,
+    'partF': 'ADCIRC'
+    }
+
+    myImport = BatchImporter.builder() \
+        .inFiles(in_files) \
+        .variables(variables) \
+        .geoOptions(geo_options) \
+        .destination(destination) \
+        .writeOptions(write_options) \
+        .build()
+    
+    # myImport = BatchImporter.builder() \
+    #     .inFiles(in_files) \
+    #     .variables(variables) \
+    #     .destination(destination) \
+    #     .writeOptions(write_options) \
+    #     .build()
+
+    myImport.process()
+# print afile
+# print stormId
+# print ensembleId
+# print destination
