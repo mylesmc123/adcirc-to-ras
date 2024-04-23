@@ -8,6 +8,13 @@ from tqdm import tqdm
 from utils.extract import Extract
 import multiprocessing
 
+# inputs
+excel_file = "Validation_Calibration_Storm_Selection.xlsx"
+sheet = "Combined_No_Duplicates"
+points_dir = "/mnt/v/projects/p00832_ocd_2023_latz_hr/01_processing/GIS/Coastal_Segments/v20240412/textfiles"
+output_dir = "output/ds_parallel"
+output_format = "dss" 
+
 def extract(surge_fn, coldstart_utc, output_dir, output_format, event, pointFile):
     head, tail = os.path.split(pointFile)
     outputFile = os.path.join(output_dir, tail.split(".")[0] + ".nc")
@@ -16,8 +23,6 @@ def extract(surge_fn, coldstart_utc, output_dir, output_format, event, pointFile
 
 # %%
 # open excel sheet
-sheet = "Combined_No_Duplicates"
-excel_file = "Validation_Calibration_Storm_Selection.xlsx"
 df = pd.read_excel(excel_file, sheet_name=sheet)
 df
 
@@ -38,9 +43,7 @@ df["ADCIRC Data on Rougarou"]
 # %%
 
 
-points_dir = "/mnt/v/projects/p00832_ocd_2023_latz_hr/01_processing/GIS/Coastal_Segments/v20240412/textfiles"
-output_dir = "output/ds_parallel"
-output_format = "dss" 
+
 
 # batch loop - for each row in df.
 
