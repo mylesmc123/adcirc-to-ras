@@ -60,7 +60,7 @@
       "console": "integratedTerminal",
       "args": [
         "--input",
-        "/mnt/w/projects/p00542_cpra_2020_lwi_t01/adcirc_simulations/20091025",
+        "/mnt/w/projects/p00542_cpra_2020_lwi_t01/adcirc_simulations/20091025/storm/fort.74.nc",
         "--output",
         // "/mnt/v/projects/p00832_ocd_2023_latz_hr/01_processing/ADCIRC2RAS/ras_wind_laura_refTime_20200731_0000.nc",
         "output/wind/Oct-09_wind_ras_-10Min.nc",
