@@ -17,7 +17,7 @@ output_format = "json"
 
 def extract(surge_fn, coldstart_utc, output_dir, output_format, event, pointFile):
     head, tail = os.path.split(pointFile)
-    outputFile = os.path.join(output_dir, tail.split(".")[0] + ".nc")
+    outputFile = os.path.join(output_dir, tail.split(".")[0] + "." + output_format)
     adcirc2hec_surge.extractor = Extract(surge_fn, pointFile, coldstart_utc)
     adcirc2hec_surge.extractor.extract(outputFile, output_format, event)
 

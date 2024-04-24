@@ -390,7 +390,6 @@ class Extract:
         self, output_file: str, time: np.ndarray, data: np.ndarray, event: str
     ) -> None:
         import json
-        print(f"Writing output to {output_file}")
 
         # Average Each Time Ordinate Value
         avg_values_List = []
