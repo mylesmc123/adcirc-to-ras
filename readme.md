@@ -47,5 +47,4 @@ These videos can then be put together to compare the temporal relationship betwe
 
 Example Hurricane Laura video is here: "V:\projects\p00832_ocd_2023_latz_hr\01_processing\ADCIRC2RAS\Example\Laura\QAQC\LWI Laura.mp4"
 
-![image](https://github.com/mylesmc123/adcirc-to-ras/assets/64209352/080c11e6-11ad-4819-a88b-6c75ea51c491)
-
+![image](https://github.com/mylesmc123/adcirc-to-ras/assets/64209352/297fa791-5a9a-45b3-b47f-9835127a2d8b)
