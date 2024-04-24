@@ -41,5 +41,5 @@ Output wind data needs to be compared temporally to the precip data (AORC).
 QAQC script will produce animations for a surge timeseries location, wind, and precip: https://github.com/mylesmc123/RAS-Data-Temporal-QAQC
 These videos can then be put together to compare the temporal relationship between the variables. 
 
-![image](https://github.com/mylesmc123/adcirc-to-ras/assets/64209352/080c11e6-11ad-4819-a88b-6c75ea51c491)
+![image](https://github.com/mylesmc123/adcirc-to-ras/assets/64209352/b30aab65-2f5f-40a5-ba8c-ab98d3cd779c)
 
