@@ -24,6 +24,8 @@ https://github.com/mylesmc123/adcirc-to-ras/blob/lwi-coastwide-cal/nc_to_dss_win
 
 output data: V:\projects\p00832_ocd_2023_latz_hr\01_processing\ADCIRC2RAS\wind\dss
 
+The resolution of the output dss files was set to 2km and the default value for the resolution of the netCDF files was 0.1 degrees (which is about 11.1 km).So the file size could be reduced by matching these resolutions better.
+
 ## Surge ADCIRC WSE to DSS Timeseries
 
 Example Laura ADCIRC Surge Data: /twi/work/projects/p00542_cpra_2020_lwi_t01/adcirc_simulations/v1/2020-laura/storm/fort.63.nc
