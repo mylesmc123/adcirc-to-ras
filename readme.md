@@ -14,12 +14,16 @@ The ADCIRC output netCDF for wind needs to be processed to be read into RAS. RAS
 
 The following script was used: https://github.com/mylesmc123/adcirc-to-ras/blob/lwi-coastwide-cal/batch_wind.py
 output data located at: V:\projects\p00832_ocd_2023_latz_hr\01_processing\ADCIRC2RAS\wind\nc
+
+![image](https://github.com/mylesmc123/adcirc-to-ras/assets/64209352/65128269-c1a6-4ce5-9b22-50ebbb9d6a1b)
+
 #### RAS Wind netCDF to DSS
 
 This script was run on windows just to avoid installing a linux version of HMS/Vortex in WSL and Rougarou was busy at the time: 
 https://github.com/mylesmc123/adcirc-to-ras/blob/lwi-coastwide-cal/nc_to_dss_wind.jy
 
 output data: V:\projects\p00832_ocd_2023_latz_hr\01_processing\ADCIRC2RAS\wind\dss
+
 ## Surge ADCIRC WSE to DSS Timeseries
 
 Example Laura ADCIRC Surge Data: /twi/work/projects/p00542_cpra_2020_lwi_t01/adcirc_simulations/v1/2020-laura/storm/fort.63.nc
@@ -31,6 +35,9 @@ Then, the following script was used to create the DSS files: https://github.com/
 
 The output dss files are created as one dss file per downstream Segment. Each Segment dss file contains each storm event.
 output dss timeseries: V:\projects\p00832_ocd_2023_latz_hr\01_processing\ADCIRC2RAS\downstream_boundary
+
+![image](https://github.com/mylesmc123/adcirc-to-ras/assets/64209352/3b69be25-a579-49bd-8eb6-4aa1f4f3d8c7)
+
 ## QAQC
 
 Output wind data needs to be compared temporally to the precip data (AORC).
@@ -42,16 +49,4 @@ These videos can then be put together to compare the temporal relationship betwe
 
 Example Hurricane Laura video is here: "V:\projects\p00832_ocd_2023_latz_hr\01_processing\ADCIRC2RAS\Example\Laura\QAQC\LWI Laura.mp4"
 
-Enjoy!
-
-
- ███▄ ▄███▓▓██   ██▓ ██▓    ▓█████   ██████     ███▄ ▄███▓ ▄████▄  
-▓██▒▀█▀ ██▒ ▒██  ██▒▓██▒    ▓█   ▀ ▒██    ▒    ▓██▒▀█▀ ██▒▒██▀ ▀█  
-▓██    ▓██░  ▒██ ██░▒██░    ▒███   ░ ▓██▄      ▓██    ▓██░▒▓█    ▄ 
-▒██    ▒██   ░ ▐██▓░▒██░    ▒▓█  ▄   ▒   ██▒   ▒██    ▒██ ▒▓▓▄ ▄██▒
-▒██▒   ░██▒  ░ ██▒▓░░██████▒░▒████▒▒██████▒▒   ▒██▒   ░██▒▒ ▓███▀ ░
-░ ▒░   ░  ░   ██▒▒▒ ░ ▒░▓  ░░░ ▒░ ░▒ ▒▓▒ ▒ ░   ░ ▒░   ░  ░░ ░▒ ▒  ░
-░  ░      ░ ▓██ ░▒░ ░ ░ ▒  ░ ░ ░  ░░ ░▒  ░ ░   ░  ░      ░  ░  ▒   
-░      ░    ▒ ▒ ░░    ░ ░      ░   ░  ░  ░     ░      ░   ░        
-       ░    ░ ░         ░  ░   ░  ░      ░            ░   ░ ░      
-            ░ ░                                           ░        
+![image](https://github.com/mylesmc123/adcirc-to-ras/assets/64209352/297fa791-5a9a-45b3-b47f-9835127a2d8b)
