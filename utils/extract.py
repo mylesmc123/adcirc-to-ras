@@ -385,13 +385,50 @@ class Extract:
         timevar[:] = time
         datavar[:, :] = data
         ds.close()
+    
+    def __write_output_json(
+        self, output_file: str, time: np.ndarray, data: np.ndarray, event: str
+    ) -> None:
+        import json
+        print(f"Writing output to {output_file}")
+
+        # Average Each Time Ordinate Value
+        avg_values_List = []
+        data[data==-99999] = np.nan
+        
+        # Transpose data to get each timestep as an array through the points. WantedStructure (time, each point value)
+        # Current structure has each point as an array through time. existingStructure (point, value for each timestep)
+        dataT = data.T
+        for step_meter in dataT:
+            # Convert each value from meter to feet.
+            step_feet = np.round((step_meter * 3.28084),3)
+            avg_values_List.append(np.nanmean(step_feet))
+            # avg_values_List.append(np.nanmean(step_meter))
+        
+        # Convert Times to Format required by DSS.
+        times_List = []
+        for step in time:
+            # print (datetime.datetime.fromtimestamp(step))
+            times_List.append(datetime.fromtimestamp(step).strftime("%d%b%Y %H:%M:%S"))
+
+
+        with open(output_file, "a+") as out:
+            json.dump(
+                {
+                    event: {
+                            "datetime": times_List,
+                            "wse": avg_values_List,
+                    }     
+                },
+                out,
+            )
 
     def __write_output_csv(
         self, output_file: str, time: np.ndarray, data: np.ndarray
     ) -> None:
         import csv
 
-        with open(output_file, "w") as out:
+        with open(output_file, "w+") as out:
             writer = csv.writer(out)
             writer.writerow(["PID", "Longitude", "Latitude", "Value"])
             for i in range(self.__n_stations):
@@ -417,9 +454,7 @@ class Extract:
         
 
         # Write Average Timeseries to DSS.
-        dss_file = f'{output_file.split(".")[0]}.dss'
         head, tail = os.path.split(output_file)
-        # aPart = f"RAS_Model:{RFC_Gages_dict[gage][1]}"
         bPart = f"{tail.split('.')[0]}"
         pathname = f"/{aPart}/{bPart}/STAGE//IR-MONTH/ADCIRC/"
         tsc = TimeSeriesContainer()
@@ -446,14 +481,14 @@ class Extract:
         times_List = []
         for step in time:
             # print (datetime.datetime.fromtimestamp(step))
-            times_List.append(datetime.datetime.fromtimestamp(step).strftime("%d%b%Y %H:%M:%S"))
+            times_List.append(datetime.fromtimestamp(step).strftime("%d%b%Y %H:%M:%S"))
 
         tsc.values = avg_values_List
         tsc.numberValues = len(tsc.values)
         tsc.times = times_List
         # tsc.startDateTime = times_List[0]
         
-        with HecDss.Open(dss_file) as fid:
+        with HecDss.Open(output_file) as fid:
             status = fid.put_ts(tsc)
     
     def __write_output_hdf(
@@ -466,14 +501,6 @@ class Extract:
         import h5py
 
         print (f'Updating the downstream boundary condtion timeseries for: {hdf_fn}.')
-
-        # pickle data and time for testing.
-        # import pickle
-        # with open('/twi/work/projects/p00667_louisiana_rtf/ras/lffs/louisiana_real_time_forecasting/src/system/scripts/dev/temp/extract_pointfile_data.pickle', 'wb') as handle:
-        #     pickle.dump(data, handle, protocol=pickle.HIGHEST_PROTOCOL)
-        # with open('/twi/work/projects/p00667_louisiana_rtf/ras/lffs/louisiana_real_time_forecasting/src/system/scripts/dev/temp/extract_pointfile_time.pickle', 'wb') as handle:
-        #     pickle.dump(time, handle, protocol=pickle.HIGHEST_PROTOCOL)
-
         
         with h5py.File(hdf_fn,  "a") as hf:
         # Ensure Results dataset is removed from HDF file. RAS unsteady solver will not run if Results dataset present.
@@ -575,7 +602,7 @@ class Extract:
             del hf[hdf_temp_path]
         
 
-    def extract(self, output_file, output_format, aPart=None, hdf_fn=None, ras_startTime=None, ras_endTime=None, ) -> None:
+    def extract(self, output_file, output_format, event=None, hdf_fn=None, ras_startTime=None, ras_endTime=None, ) -> None:
 
         if "transpose" in self.__variable:
             time, data = self.__extract_from_transpose_variable()
@@ -584,9 +611,11 @@ class Extract:
 
         if output_format == "netcdf":
             self.__write_output_netcdf(output_file, time, data)
+        elif output_format == "json":
+            self.__write_output_json(output_file, time, data, event)
         elif output_format == "csv":
             self.__write_output_csv(output_file, time, data)
         elif output_format == "dss":
-            self.__write_output_dss(output_file, time, data, aPart)
+            self.__write_output_dss(output_file, time, data, event)
         elif output_format == "ras":
             self.__write_output_hdf(output_file, time, data, hdf_fn, ras_startTime, ras_endTime)

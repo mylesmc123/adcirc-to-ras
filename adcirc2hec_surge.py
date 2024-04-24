@@ -62,7 +62,7 @@ def main():
     )
     p.add_argument(
         "--format",
-        help="Format to use. Either netcdf, csv, dss, ras",
+        help="Format to use. Either netcdf, csv, dss, ras, json",
         required=False,
         default="netcdf",
         type=str,
@@ -92,12 +92,24 @@ def main():
         tzinfo=timezone.utc,
     )
 
+    outputFileExtensions = {
+        "netcdf": ".nc",
+        "csv": ".csv",
+        "dss": ".dss",
+        "ras": ".hdf",
+        "json": ".json",
+    }
+
+    # get the output file extension based on the format
+    outputExtension = outputFileExtensions[args.format]
+
     pointFilesList = getPointFilesFromDir(args.dir)
     for pointFile in pointFilesList:
         head, tail = os.path.split(pointFile)
-        outputFile = os.path.join(args.outdir, tail.split(".")[0] + ".nc")
-        print("Outut file: ", outputFile)
-        print (f'\nExtracting {tail.split(".")[0]}')
+        # // defaults to a .nc extension but it is replaced later if using a different format.
+        outputFile = os.path.join(args.outdir, tail.split(".")[0] + outputExtension)
+        print("\nOutput file: ", outputFile)
+        print (f'Extracting {tail.split(".")[0]}')
 
         # if ras output validate and extract using additional required arguments.
         if args.format == 'ras':

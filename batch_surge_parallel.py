@@ -12,8 +12,8 @@ import multiprocessing
 excel_file = "Validation_Calibration_Storm_Selection.xlsx"
 sheet = "Combined_No_Duplicates"
 points_dir = "/mnt/v/projects/p00832_ocd_2023_latz_hr/01_processing/GIS/Coastal_Segments/v20240412/textfiles"
-output_dir = "output/ds_parallel"
-output_format = "dss" 
+output_dir = "output/ds_json"
+output_format = "json" 
 
 def extract(surge_fn, coldstart_utc, output_dir, output_format, event, pointFile):
     head, tail = os.path.split(pointFile)
@@ -41,13 +41,7 @@ df = df[~df["ADCIRC Data on Rougarou"].str.contains(",")]
 df = df.reset_index(drop=True)
 df["ADCIRC Data on Rougarou"]
 # %%
-
-
-
-
 # batch loop - for each row in df.
-
-
 for i in tqdm(range(len(df))):
     adcirc_dir = df["ADCIRC Data on Rougarou"][i]
     # reformat to WSL path
@@ -79,7 +73,5 @@ for i in tqdm(range(len(df))):
         # extract(surge_fn, pointFile, coldstart_utc, outputFile, output_format, event)
         # print("Outut file: ", outputFile)
         # print (f'\nExtracting {tail.split(".")[0]}')
-
-        
 
 # %%
