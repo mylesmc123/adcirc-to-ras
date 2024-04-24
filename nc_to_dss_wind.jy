@@ -29,7 +29,7 @@ f = glob.glob(in_dir+"/*.nc")
 
 out_dir = r"V:\projects\p00832_ocd_2023_latz_hr\01_processing\ADCIRC2RAS\wind\dss"
 
-for afile in f[14:]:
+for afile in f[33:]:
     head, tail = os.path.split(afile)
     in_files = [afile]
     stormId = tail.split("_wind")[0].replace("-", "_")
