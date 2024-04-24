@@ -39,16 +39,6 @@ QAQC script will produce animations for a surge timeseries location, wind, and p
 These videos can then be put together to compare the temporal relationship between the variables. 
 
 Example Hurricane Laura video is here: "V:\projects\p00832_ocd_2023_latz_hr\01_processing\ADCIRC2RAS\Example\Laura\QAQC\LWI Laura.mp4"
-
-Enjoy!
-
-
- ███▄ ▄███▓▓██   ██▓ ██▓    ▓█████   ██████     ███▄ ▄███▓ ▄████▄  
-▓██▒▀█▀ ██▒ ▒██  ██▒▓██▒    ▓█   ▀ ▒██    ▒    ▓██▒▀█▀ ██▒▒██▀ ▀█  
-▓██    ▓██░  ▒██ ██░▒██░    ▒███   ░ ▓██▄      ▓██    ▓██░▒▓█    ▄ 
-▒██    ▒██   ░ ▐██▓░▒██░    ▒▓█  ▄   ▒   ██▒   ▒██    ▒██ ▒▓▓▄ ▄██▒
-▒██▒   ░██▒  ░ ██▒▓░░██████▒░▒████▒▒██████▒▒   ▒██▒   ░██▒▒ ▓███▀ ░
-░ ▒░   ░  ░   ██▒▒▒ ░ ▒░▓  ░░░ ▒░ ░▒ ▒▓▒ ▒ ░   ░ ▒░   ░  ░░ ░▒ ▒  ░
 ░  ░      ░ ▓██ ░▒░ ░ ░ ▒  ░ ░ ░  ░░ ░▒  ░ ░   ░  ░      ░  ░  ▒   
 ░      ░    ▒ ▒ ░░    ░ ░      ░   ░  ░  ░     ░      ░   ░        
        ░    ░ ░         ░  ░   ░  ░      ░            ░   ░ ░      
