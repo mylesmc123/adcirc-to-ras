@@ -1,5 +1,7 @@
 # ADCIRC netCDF to RAS Compliant data
 
+A set of scripts using command-line interface arguments to convert ADCIRC netCDF data to RAS compliant data. This includes 2D wind and 1D downstream boundary surge timeseries data.
+
 ## All data locations are related to The Water Institute for use with LWI Coastwide Model Development.
 
 ADCIRC Data locations on Rougarou can be found in Column O of the spreadsheet: https://thewaterinstitute.sharepoint.com/:x:/r/sites/P-00832_OCD_2023_LATZ_HR/_layouts/15/Doc.aspx?sourcedoc=%7B4502DA51-0C48-4775-A056-DE6ECCC6193B%7D&file=Validation_Calibration_Storm_Selection.xlsx&action=default&mobileredirect=true&DefaultItemOpen=1&login_hint=mmcmanus%40thewaterinstitute.org&ct=1712941796553&wdOrigin=OFFICECOM-WEB.MAIN.EDGEWORTH&cid=d2a2ce0f-4cd4-4d05-8647-a9bc74b78730&wdPreviousSessionSrc=HarmonyWeb&wdPreviousSession=eb6711cb-331c-4f44-b146-06e98f9d9279
