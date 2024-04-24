@@ -524,7 +524,7 @@ class HecWindFile:
         reference_time = datetime.strptime(reference_time, "%Y-%m-%d %H:%M:%S")
 
         # move reference time back 10 minutes
-        reference_time = reference_time - timedelta(minutes=10)
+        # reference_time = reference_time - timedelta(minutes=10)
 
         # ...Generate blocks of the output raster
         xx = np.linspace(x_min, x_max, num=int((x_max - x_min) / x_resolution + 1))
