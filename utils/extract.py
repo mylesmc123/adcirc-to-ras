@@ -411,17 +411,27 @@ class Extract:
             # print (datetime.datetime.fromtimestamp(step))
             times_List.append(datetime.fromtimestamp(step).strftime("%d%b%Y %H:%M:%S"))
 
-
-        with open(output_file, "a+") as out:
-            json.dump(
-                {
-                    event: {
-                            "datetime": times_List,
-                            "wse": avg_values_List,
-                    }     
-                },
-                out,
-            )
+        # check if output file exists, if it does append to it, else create it. 
+        # This ensures the outer bracket structure  of the json is maintained.
+        try:
+            with open(output_file, "r") as out:
+                data = json.load(out)
+                data[event] = {
+                    "datetime": times_List,
+                    "wse": avg_values_List,
+                }
+        except:
+            # since file does not exist, create it.
+            with open(output_file, "w") as out:
+                json.dump(
+                    {
+                        event: {
+                                "datetime": times_List,
+                                "wse": avg_values_List,
+                        }     
+                    },
+                    out,
+                )
 
     def __write_output_csv(
         self, output_file: str, time: np.ndarray, data: np.ndarray
