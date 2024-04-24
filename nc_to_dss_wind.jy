@@ -24,12 +24,12 @@ geo_options = {
 
 # events = ['2004_MATTHEW', '2005_RITA', '2012_ISAAC']
 # in_dir = r"V:\projects\p00542_cpra_2020_lwi_t10\00_collection\data\rainfall\temp"
-in_dir = r"/home/mmc/py/adcirc_to_ras/output/wind/"
+in_dir = r"V:\projects\p00832_ocd_2023_latz_hr\01_processing\ADCIRC2RAS\wind\nc"
 f = glob.glob(in_dir+"/*.nc")
 
-out_dir = r"/home/mmc/py/adcirc_to_ras/output/wind/dss"
+out_dir = r"V:\projects\p00832_ocd_2023_latz_hr\01_processing\ADCIRC2RAS\wind\dss"
 
-for afile in f:
+for afile in f[14:]:
     head, tail = os.path.split(afile)
     in_files = [afile]
     stormId = tail.split("_wind")[0].replace("-", "_")
@@ -47,13 +47,6 @@ for afile in f:
         .destination(destination) \
         .writeOptions(write_options) \
         .build()
-    
-    # myImport = BatchImporter.builder() \
-    #     .inFiles(in_files) \
-    #     .variables(variables) \
-    #     .destination(destination) \
-    #     .writeOptions(write_options) \
-    #     .build()
 
     myImport.process()
 # print afile
