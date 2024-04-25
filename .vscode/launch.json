@@ -24,7 +24,7 @@
         "--dir",
         "/mnt/v/projects/p00832_ocd_2023_latz_hr/01_processing/GIS/Coastal_Segments/v20240412/textfiles/test",
         "--outdir",
-        "output/ds_json",
+        "output/ds_json_test",
         "--format",
         "json",
         "--event",

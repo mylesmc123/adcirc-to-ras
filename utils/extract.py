@@ -621,7 +621,7 @@ class Extract:
             del hf[hdf_temp_path]
         
 
-    def extract(self, output_file, output_format, event=None, hdf_fn=None, ras_startTime=None, ras_endTime=None, json_start=None) -> None:
+    def extract(self, output_file, output_format, event=None, json_start=None, hdf_fn=None, ras_startTime=None, ras_endTime=None ) -> None:
 
         if "transpose" in self.__variable:
             time, data = self.__extract_from_transpose_variable()

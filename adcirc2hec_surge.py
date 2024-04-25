@@ -140,7 +140,7 @@ def main():
 
             # extract using additional required arguments for RAS HDF output.
             extractor = Extract(args.file, pointFile, coldstart_utc)
-            extractor.extract(outputFile, args.format, args.ras_hdf, args.ras_start, args.ras_end)
+            extractor.extract(outputFile, args.format, hdf_fn=args.ras_hdf, ras_startTime=args.ras_start, ras_endTime=args.ras_end)
         
         elif args.format == 'json':
             if (args.json_start is None):
@@ -152,7 +152,7 @@ def main():
                 exit()
             # extract using additional required argument for JSON output.
             extractor = Extract(args.file, pointFile, coldstart_utc)
-            extractor.extract(outputFile, args.format, args.event, args.json_start)
+            extractor.extract(outputFile, args.format, event=args.event, json_start=args.json_start)
 
         # else if not ras or json output, extract using less arguments.
         else:
