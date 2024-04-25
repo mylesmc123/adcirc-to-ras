@@ -414,18 +414,20 @@ class Extract:
         # check if output file exists, if it does append to it, else create it. 
         # This ensures the outer bracket structure  of the json is maintained.
         if os.path.exists(output_file):
-
-                with open(output_file, "r+") as out:
-                    j = json.load(out)
-                    j[event] = {
-                        "datetime": times_List,
-                        "wse": avg_values_List,
-                    }
-                    out.seek(0)
-                    json.dump(j, out)
+            with open(output_file) as json_file:
+                json_decoded = json.load(json_file)
+                
+            json_decoded[event] = {
+                "datetime": times_List,
+                "wse": avg_values_List,
+            }
+                # json_file.seek(0)
+            with open(output_file, 'w') as json_file:
+                # json_decoded = json.load(json_file)
+                json.dump(json_decoded, json_file)
         else:
             # since file does not exist, create it.
-            with open(output_file, "w") as out:
+            with open(output_file, 'w') as out:
                 json.dump(
                     {
                         event: {

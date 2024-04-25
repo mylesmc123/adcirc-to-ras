@@ -41,10 +41,13 @@ df = df[~df["ADCIRC Data on Rougarou"].str.contains(",")]
 df = df.reset_index(drop=True)
 df["ADCIRC Data on Rougarou"]
 # %%
-# batch loop - for each row in df.
+
 for i in tqdm(range(len(df))):
-    adcirc_dir = df["ADCIRC Data on Rougarou"][i]
-    # reformat to WSL path
+    # skipping first 2 events for debugging
+    # if i < 2:
+    #     continue
+    adcirc_dir = df["ADCIRC Data on Rougarou"][i+2]
+    # reformatting to my WSL path instead of the rougarou path used in spreadsheet
     adcirc_dir = adcirc_dir.replace("/twi/work", "/mnt/w")
     event = df["Name"][i]
     print(f'\n{event}')
@@ -59,9 +62,6 @@ for i in tqdm(range(len(df))):
         0,
         tzinfo=timezone.utc,
     )
-    # Convert to pandas timestamp
-    # coldstart_utc = pd.Timestamp(coldstart_utc)
-
     pointFilesList = adcirc2hec_surge.getPointFilesFromDir(points_dir)
     # print (pointFilesList)
     pool = multiprocessing.Pool(processes=16)
