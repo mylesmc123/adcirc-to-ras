@@ -12,14 +12,15 @@ import multiprocessing
 excel_file = "Validation_Calibration_Storm_Selection.xlsx"
 sheet = "Combined_No_Duplicates"
 points_dir = "/mnt/v/projects/p00832_ocd_2023_latz_hr/01_processing/GIS/Coastal_Segments/v20240412/textfiles"
-output_dir = "output/ds_json"
+output_dir = "output/ds_json_timeSync"
 output_format = "json" 
+json_start = "1970-01-01 00:00:00"
 
-def extract(surge_fn, coldstart_utc, output_dir, output_format, event, pointFile):
+def extract(surge_fn, coldstart_utc, output_dir, output_format, event, json_start, pointFile):
     head, tail = os.path.split(pointFile)
     outputFile = os.path.join(output_dir, tail.split(".")[0] + "." + output_format)
     adcirc2hec_surge.extractor = Extract(surge_fn, pointFile, coldstart_utc)
-    adcirc2hec_surge.extractor.extract(outputFile, output_format, event)
+    adcirc2hec_surge.extractor.extract(outputFile, output_format, event, json_start)
 
 # %%
 # open excel sheet
@@ -65,6 +66,6 @@ for i in tqdm(range(len(df))):
     pointFilesList = adcirc2hec_surge.getPointFilesFromDir(points_dir)
     # print (pointFilesList)
     pool = multiprocessing.Pool(processes=16)
-    pool.starmap( extract, [[surge_fn, coldstart_utc, output_dir, output_format, event, x] for x in pointFilesList] )
+    pool.starmap( extract, [[surge_fn, coldstart_utc, output_dir, output_format, event, json_start, x] for x in pointFilesList] )
 
 # %%

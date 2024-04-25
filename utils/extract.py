@@ -388,7 +388,7 @@ class Extract:
         ds.close()
     
     def __write_output_json(
-        self, output_file: str, time: np.ndarray, data: np.ndarray, event: str
+        self, output_file: str, time: np.ndarray, data: np.ndarray, event: str, start_time: str
     ) -> None:
         import json
 
@@ -405,11 +405,15 @@ class Extract:
             avg_values_List.append(np.nanmean(step_feet))
             # avg_values_List.append(np.nanmean(step_meter))
         
-        # Convert Times to Format required by DSS.
+        # Get the delta time from the start time vs the first time in the time array.
+        delta_time = time[0] - datetime.timestamp(datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S'))
+        # Convert Times to Format "%d%b%Y %H:%M:%S".
         times_List = []
         for step in time:
             # print (datetime.datetime.fromtimestamp(step))
-            times_List.append(datetime.fromtimestamp(step).strftime("%d%b%Y %H:%M:%S"))
+            # adjust the time to be relative to delta_time.
+            times_List.append(datetime.fromtimestamp(step - delta_time).strftime("%d%b%Y %H:%M:%S"))
+            # times_List.append(datetime.fromtimestamp(step).strftime("%d%b%Y %H:%M:%S"))
 
         # check if output file exists, if it does append to it, else create it. 
         # This ensures the outer bracket structure  of the json is maintained.
@@ -439,7 +443,7 @@ class Extract:
                 )
 
     def __write_output_csv(
-        self, output_file: str, time: np.ndarray, data: np.ndarray
+        self, output_file: str, time: np.ndarray, data: np.ndarray,
     ) -> None:
         import csv
 
@@ -617,7 +621,7 @@ class Extract:
             del hf[hdf_temp_path]
         
 
-    def extract(self, output_file, output_format, event=None, hdf_fn=None, ras_startTime=None, ras_endTime=None, ) -> None:
+    def extract(self, output_file, output_format, event=None, hdf_fn=None, ras_startTime=None, ras_endTime=None, json_start=None) -> None:
 
         if "transpose" in self.__variable:
             time, data = self.__extract_from_transpose_variable()
@@ -627,7 +631,7 @@ class Extract:
         if output_format == "netcdf":
             self.__write_output_netcdf(output_file, time, data)
         elif output_format == "json":
-            self.__write_output_json(output_file, time, data, event)
+            self.__write_output_json(output_file, time, data, event, json_start)
         elif output_format == "csv":
             self.__write_output_csv(output_file, time, data)
         elif output_format == "dss":

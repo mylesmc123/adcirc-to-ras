@@ -74,6 +74,13 @@ def main():
         default="",
         type=str,
     )
+    p.add_argument(
+        "--json_start",
+        help="Specified start time to use for outputting synced Json files. If not specified, the start time will be the cold start time. Format: YYYY-MM-DD HH:MM:SS",
+        required=False,
+        default=None,
+        type=str,
+    )
 
     args = p.parse_args()
 
@@ -99,6 +106,8 @@ def main():
         "ras": ".hdf",
         "json": ".json",
     }
+
+    
 
     # get the output file extension based on the format
     outputExtension = outputFileExtensions[args.format]
@@ -132,8 +141,20 @@ def main():
             # extract using additional required arguments for RAS HDF output.
             extractor = Extract(args.file, pointFile, coldstart_utc)
             extractor.extract(outputFile, args.format, args.ras_hdf, args.ras_start, args.ras_end)
+        
+        elif args.format == 'json':
+            if (args.json_start is None):
+                args.json_start = coldstart_utc.strftime('%Y-%m-%d %H:%M:%S')
+            try:
+                datetime.strptime(args.json_start, '%Y-%m-%d %H:%M:%S')
+            except:
+                print (f'\nERROR: --start {args.json_start} not the correct format required (Format Ex: 2022-09-19 06:00:00).\n')
+                exit()
+            # extract using additional required argument for JSON output.
+            extractor = Extract(args.file, pointFile, coldstart_utc)
+            extractor.extract(outputFile, args.format, args.event, args.json_start)
 
-        # else if not ras output, extract using less arguments.
+        # else if not ras or json output, extract using less arguments.
         else:
             extractor = Extract(args.file, pointFile, coldstart_utc)
             extractor.extract(outputFile, args.format, args.event)
