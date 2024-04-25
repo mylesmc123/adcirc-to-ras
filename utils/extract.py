@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from datetime import datetime, timedelta, timezone
+import os
 import numpy as np
 
 
@@ -412,14 +413,17 @@ class Extract:
 
         # check if output file exists, if it does append to it, else create it. 
         # This ensures the outer bracket structure  of the json is maintained.
-        try:
-            with open(output_file, "r") as out:
-                data = json.load(out)
-                data[event] = {
-                    "datetime": times_List,
-                    "wse": avg_values_List,
-                }
-        except:
+        if os.path.exists(output_file):
+
+                with open(output_file, "r+") as out:
+                    j = json.load(out)
+                    j[event] = {
+                        "datetime": times_List,
+                        "wse": avg_values_List,
+                    }
+                    out.seek(0)
+                    json.dump(j, out)
+        else:
             # since file does not exist, create it.
             with open(output_file, "w") as out:
                 json.dump(

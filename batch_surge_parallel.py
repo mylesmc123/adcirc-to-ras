@@ -66,12 +66,5 @@ for i in tqdm(range(len(df))):
     # print (pointFilesList)
     pool = multiprocessing.Pool(processes=16)
     pool.starmap( extract, [[surge_fn, coldstart_utc, output_dir, output_format, event, x] for x in pointFilesList] )
-    # pool.starmap( extract, [[surge_fn, coldstart_utc, output_dir, output_format, event, pointFilesList, x] for x in range(1,len(pointFilesList)+1)] )
-    # for pointFile in tqdm(pointFilesList):
-        # head, tail = os.path.split(pointFile)
-        # outputFile = os.path.join(output_dir, tail.split(".")[0] + ".nc")
-        # extract(surge_fn, pointFile, coldstart_utc, outputFile, output_format, event)
-        # print("Outut file: ", outputFile)
-        # print (f'\nExtracting {tail.split(".")[0]}')
 
 # %%
