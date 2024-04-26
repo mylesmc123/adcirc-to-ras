@@ -42,6 +42,14 @@ The segment dss files were combined to make one dss file for all segments and al
 
 ![image](https://github.com/mylesmc123/adcirc-to-ras/assets/64209352/3b69be25-a579-49bd-8eb6-4aa1f4f3d8c7)
 
+## Surge ADCIRC WSE Webmap
+To better visualize the downstream data for all segments across events, a webmap was created that also includes hurricane tracks and the LWI regions map. You can click any segment to display the downstream timeseries for all events. If you double click an event in the legend of the plot, it will turn all the others off.
+
+Web App: https://glo-lwi.onrender.com/lwi_ds_calval.html
+
+![image](https://github.com/mylesmc123/adcirc-to-ras/assets/64209352/78afd6f3-26a7-451f-9a3b-6c6308aa3080)
+
+
 ## QAQC
 
 Output wind data needs to be compared temporally to the precip data (AORC).
