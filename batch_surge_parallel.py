@@ -10,13 +10,14 @@ import multiprocessing
 
 # inputs
 excel_file = "Validation_Calibration_Storm_Selection.xlsx"
+# excel_file = "test.xlsx"
 sheet = "Combined_No_Duplicates"
-points_dir = "/mnt/v/projects/p00832_ocd_2023_latz_hr/01_processing/GIS/Coastal_Segments/v20240412/textfiles"
-output_dir = "output/ds_json_timeSync"
-output_format = "json" 
-json_start = "1970-01-01 00:00:00"
+points_dir = "/mnt/v/projects/p00832_ocd_2023_latz_hr/01_processing/GIS/Coastal_Segments/v20240412/textfiles/"
+output_dir = "output/ds_parallel_noNaN"
+output_format = "dss" 
+# json_start = "1970-01-01 00:00:00"
 
-def extract(surge_fn, coldstart_utc, output_dir, output_format, event, json_start, pointFile):
+def extract(surge_fn, coldstart_utc, output_dir, output_format, event, pointFile, json_start=None):
     head, tail = os.path.split(pointFile)
     outputFile = os.path.join(output_dir, tail.split(".")[0] + "." + output_format)
     adcirc2hec_surge.extractor = Extract(surge_fn, pointFile, coldstart_utc)
@@ -44,10 +45,10 @@ df["ADCIRC Data on Rougarou"]
 # %%
 
 for i in tqdm(range(len(df))):
-    # skipping first 2 events for debugging
-    # if i < 2:
+    # skipping first 21 events for debugging
+    # if i < 21:
     #     continue
-    adcirc_dir = df["ADCIRC Data on Rougarou"][i+2]
+    adcirc_dir = df["ADCIRC Data on Rougarou"][i]
     # reformatting to my WSL path instead of the rougarou path used in spreadsheet
     adcirc_dir = adcirc_dir.replace("/twi/work", "/mnt/w")
     event = df["Name"][i]
@@ -66,6 +67,13 @@ for i in tqdm(range(len(df))):
     pointFilesList = adcirc2hec_surge.getPointFilesFromDir(points_dir)
     # print (pointFilesList)
     pool = multiprocessing.Pool(processes=16)
-    pool.starmap( extract, [[surge_fn, coldstart_utc, output_dir, output_format, event, json_start, x] for x in pointFilesList] )
+    if output_format == "json":
+        if json_start is None:
+            json_start = coldstart_utc.strftime('%Y-%m-%d %H:%M:%S')
+        pool.starmap( extract, [[surge_fn, coldstart_utc, output_dir, output_format, event, x, json_start] for x in pointFilesList] )
+    else: pool.starmap( extract, [[surge_fn, coldstart_utc, output_dir, output_format, event, x] for x in pointFilesList] )
+
+print("Done.")
 
 # %%
+

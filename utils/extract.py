@@ -495,20 +495,33 @@ class Extract:
             step_feet = step_meter * 3.28084
             avg_values_List.append(np.nanmean(step_feet))
             # avg_values_List.append(np.nanmean(step_meter))
-        
         # Convert Times to Format required by DSS.
         times_List = []
         for step in time:
             # print (datetime.datetime.fromtimestamp(step))
-            times_List.append(datetime.fromtimestamp(step).strftime("%d%b%Y %H:%M:%S"))
+            times_List.append(datetime.datetime.fromtimestamp(step).strftime("%d%b%Y %H:%M:%S"))
+        
+        # zip the two lists together to create a list of tuples.
+        times_and_values = list(zip(times_List, avg_values_List))
+        # only replace a nan with 0 if it is the first value in the list. This ensures the start time is respected even if it starts with a nan.
+        if np.isnan(times_and_values[0][1]):
+            # replace the tuple ordinate with the time unchanged, and then a 0 for the value.
+            times_and_values[0] = (times_and_values[0][0], 0)
+        # remove any other ordinate from the tuple for both value and time if the value is nan.
+        # since the DSS record is irregular, simply removing the missing data will ensure np.nan is not written to the DSS, which causes it to write a bad character.
+        # this could potentially be better handled by forcing np.nan to equal the noData value that DSS uses.
+        times_and_values = [(x[0], x[1]) for x in times_and_values if not np.isnan(x[1])]
 
-        tsc.values = avg_values_List
-        tsc.numberValues = len(tsc.values)
-        tsc.times = times_List
+        # set times as the first element in the tuple.
+        tsc.times = [x[0] for x in times_and_values]
         # tsc.startDateTime = times_List[0]
+        # set values as the second element in the tuple.
+        tsc.values = [x[1] for x in times_and_values]
+        tsc.numberValues = len(tsc.values)
         
         with HecDss.Open(output_file) as fid:
             status = fid.put_ts(tsc)
+        print("DSS File Written.")
     
     def __write_output_hdf(
         self, output_file : str, time : np.ndarray, data : np.ndarray, hdf_fn : str, ras_startTime : str, ras_endTime: str
