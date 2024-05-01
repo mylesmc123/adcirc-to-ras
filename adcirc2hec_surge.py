@@ -62,7 +62,7 @@ def main():
     )
     p.add_argument(
         "--format",
-        help="Format to use. Either netcdf, csv, dss, ras",
+        help="Format to use. Either netcdf, csv, dss, ras, json",
         required=False,
         default="netcdf",
         type=str,
@@ -72,6 +72,13 @@ def main():
         help="Event name to use for A-part of output DSS files",
         required=False,
         default="",
+        type=str,
+    )
+    p.add_argument(
+        "--json_start",
+        help="Specified start time to use for outputting synced Json files. If not specified, the start time will be the cold start time. Format: YYYY-MM-DD HH:MM:SS",
+        required=False,
+        default=None,
         type=str,
     )
 
@@ -92,12 +99,26 @@ def main():
         tzinfo=timezone.utc,
     )
 
+    outputFileExtensions = {
+        "netcdf": ".nc",
+        "csv": ".csv",
+        "dss": ".dss",
+        "ras": ".hdf",
+        "json": ".json",
+    }
+
+    
+
+    # get the output file extension based on the format
+    outputExtension = outputFileExtensions[args.format]
+
     pointFilesList = getPointFilesFromDir(args.dir)
     for pointFile in pointFilesList:
         head, tail = os.path.split(pointFile)
-        outputFile = os.path.join(args.outdir, tail.split(".")[0] + ".nc")
-        print("Outut file: ", outputFile)
-        print (f'\nExtracting {tail.split(".")[0]}')
+        # // defaults to a .nc extension but it is replaced later if using a different format.
+        outputFile = os.path.join(args.outdir, tail.split(".")[0] + outputExtension)
+        print("\nOutput file: ", outputFile)
+        print (f'Extracting {tail.split(".")[0]}')
 
         # if ras output validate and extract using additional required arguments.
         if args.format == 'ras':
@@ -119,9 +140,21 @@ def main():
 
             # extract using additional required arguments for RAS HDF output.
             extractor = Extract(args.file, pointFile, coldstart_utc)
-            extractor.extract(outputFile, args.format, args.ras_hdf, args.ras_start, args.ras_end)
+            extractor.extract(outputFile, args.format, hdf_fn=args.ras_hdf, ras_startTime=args.ras_start, ras_endTime=args.ras_end)
+        
+        elif args.format == 'json':
+            if (args.json_start is None):
+                args.json_start = coldstart_utc.strftime('%Y-%m-%d %H:%M:%S')
+            try:
+                datetime.strptime(args.json_start, '%Y-%m-%d %H:%M:%S')
+            except:
+                print (f'\nERROR: --start {args.json_start} not the correct format required (Format Ex: 2022-09-19 06:00:00).\n')
+                exit()
+            # extract using additional required argument for JSON output.
+            extractor = Extract(args.file, pointFile, coldstart_utc)
+            extractor.extract(outputFile, args.format, event=args.event, json_start=args.json_start)
 
-        # else if not ras output, extract using less arguments.
+        # else if not ras or json output, extract using less arguments.
         else:
             extractor = Extract(args.file, pointFile, coldstart_utc)
             extractor.extract(outputFile, args.format, args.event)

@@ -10,16 +10,18 @@ import multiprocessing
 
 # inputs
 excel_file = "Validation_Calibration_Storm_Selection.xlsx"
+# excel_file = "test.xlsx"
 sheet = "Combined_No_Duplicates"
-points_dir = "/mnt/v/projects/p00832_ocd_2023_latz_hr/01_processing/GIS/Coastal_Segments/v20240412/textfiles"
-output_dir = "output/ds_parallel"
+points_dir = "/mnt/v/projects/p00832_ocd_2023_latz_hr/01_processing/GIS/Coastal_Segments/v20240412/textfiles/"
+output_dir = "output/ds_parallel_noNaN"
 output_format = "dss" 
+# json_start = "1970-01-01 00:00:00"
 
-def extract(surge_fn, coldstart_utc, output_dir, output_format, event, pointFile):
+def extract(surge_fn, coldstart_utc, output_dir, output_format, event, pointFile, json_start=None):
     head, tail = os.path.split(pointFile)
-    outputFile = os.path.join(output_dir, tail.split(".")[0] + ".nc")
+    outputFile = os.path.join(output_dir, tail.split(".")[0] + "." + output_format)
     adcirc2hec_surge.extractor = Extract(surge_fn, pointFile, coldstart_utc)
-    adcirc2hec_surge.extractor.extract(outputFile, output_format, event)
+    adcirc2hec_surge.extractor.extract(outputFile, output_format, event, json_start)
 
 # %%
 # open excel sheet
@@ -42,15 +44,12 @@ df = df.reset_index(drop=True)
 df["ADCIRC Data on Rougarou"]
 # %%
 
-
-
-
-# batch loop - for each row in df.
-
-
 for i in tqdm(range(len(df))):
+    # skipping first 21 events for debugging
+    # if i < 21:
+    #     continue
     adcirc_dir = df["ADCIRC Data on Rougarou"][i]
-    # reformat to WSL path
+    # reformatting to my WSL path instead of the rougarou path used in spreadsheet
     adcirc_dir = adcirc_dir.replace("/twi/work", "/mnt/w")
     event = df["Name"][i]
     print(f'\n{event}')
@@ -65,21 +64,16 @@ for i in tqdm(range(len(df))):
         0,
         tzinfo=timezone.utc,
     )
-    # Convert to pandas timestamp
-    # coldstart_utc = pd.Timestamp(coldstart_utc)
-
     pointFilesList = adcirc2hec_surge.getPointFilesFromDir(points_dir)
     # print (pointFilesList)
     pool = multiprocessing.Pool(processes=16)
-    pool.starmap( extract, [[surge_fn, coldstart_utc, output_dir, output_format, event, x] for x in pointFilesList] )
-    # pool.starmap( extract, [[surge_fn, coldstart_utc, output_dir, output_format, event, pointFilesList, x] for x in range(1,len(pointFilesList)+1)] )
-    # for pointFile in tqdm(pointFilesList):
-        # head, tail = os.path.split(pointFile)
-        # outputFile = os.path.join(output_dir, tail.split(".")[0] + ".nc")
-        # extract(surge_fn, pointFile, coldstart_utc, outputFile, output_format, event)
-        # print("Outut file: ", outputFile)
-        # print (f'\nExtracting {tail.split(".")[0]}')
+    if output_format == "json":
+        if json_start is None:
+            json_start = coldstart_utc.strftime('%Y-%m-%d %H:%M:%S')
+        pool.starmap( extract, [[surge_fn, coldstart_utc, output_dir, output_format, event, x, json_start] for x in pointFilesList] )
+    else: pool.starmap( extract, [[surge_fn, coldstart_utc, output_dir, output_format, event, x] for x in pointFilesList] )
 
-        
+print("Done.")
 
 # %%
+

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from datetime import datetime, timedelta, timezone
+import os
 import numpy as np
 
 
@@ -385,13 +386,68 @@ class Extract:
         timevar[:] = time
         datavar[:, :] = data
         ds.close()
+    
+    def __write_output_json(
+        self, output_file: str, time: np.ndarray, data: np.ndarray, event: str, start_time: str
+    ) -> None:
+        import json
+
+        # Average Each Time Ordinate Value
+        avg_values_List = []
+        data[data==-99999] = np.nan
+        
+        # Transpose data to get each timestep as an array through the points. WantedStructure (time, each point value)
+        # Current structure has each point as an array through time. existingStructure (point, value for each timestep)
+        dataT = data.T
+        for step_meter in dataT:
+            # Convert each value from meter to feet.
+            step_feet = np.round((step_meter * 3.28084),3)
+            avg_values_List.append(np.nanmean(step_feet))
+            # avg_values_List.append(np.nanmean(step_meter))
+        
+        # Get the delta time from the start time vs the first time in the time array.
+        delta_time = time[0] - datetime.timestamp(datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S'))
+        # Convert Times to Format "%d%b%Y %H:%M:%S".
+        times_List = []
+        for step in time:
+            # print (datetime.datetime.fromtimestamp(step))
+            # adjust the time to be relative to delta_time.
+            times_List.append(datetime.fromtimestamp(step - delta_time).strftime("%d%b%Y %H:%M:%S"))
+            # times_List.append(datetime.fromtimestamp(step).strftime("%d%b%Y %H:%M:%S"))
+
+        # check if output file exists, if it does append to it, else create it. 
+        # This ensures the outer bracket structure  of the json is maintained.
+        if os.path.exists(output_file):
+            with open(output_file) as json_file:
+                json_decoded = json.load(json_file)
+                
+            json_decoded[event] = {
+                "datetime": times_List,
+                "wse": avg_values_List,
+            }
+                # json_file.seek(0)
+            with open(output_file, 'w') as json_file:
+                # json_decoded = json.load(json_file)
+                json.dump(json_decoded, json_file)
+        else:
+            # since file does not exist, create it.
+            with open(output_file, 'w') as out:
+                json.dump(
+                    {
+                        event: {
+                                "datetime": times_List,
+                                "wse": avg_values_List,
+                        }     
+                    },
+                    out,
+                )
 
     def __write_output_csv(
-        self, output_file: str, time: np.ndarray, data: np.ndarray
+        self, output_file: str, time: np.ndarray, data: np.ndarray,
     ) -> None:
         import csv
 
-        with open(output_file, "w") as out:
+        with open(output_file, "w+") as out:
             writer = csv.writer(out)
             writer.writerow(["PID", "Longitude", "Latitude", "Value"])
             for i in range(self.__n_stations):
@@ -417,9 +473,7 @@ class Extract:
         
 
         # Write Average Timeseries to DSS.
-        dss_file = f'{output_file.split(".")[0]}.dss'
         head, tail = os.path.split(output_file)
-        # aPart = f"RAS_Model:{RFC_Gages_dict[gage][1]}"
         bPart = f"{tail.split('.')[0]}"
         pathname = f"/{aPart}/{bPart}/STAGE//IR-MONTH/ADCIRC/"
         tsc = TimeSeriesContainer()
@@ -441,20 +495,33 @@ class Extract:
             step_feet = step_meter * 3.28084
             avg_values_List.append(np.nanmean(step_feet))
             # avg_values_List.append(np.nanmean(step_meter))
-        
         # Convert Times to Format required by DSS.
         times_List = []
         for step in time:
             # print (datetime.datetime.fromtimestamp(step))
             times_List.append(datetime.datetime.fromtimestamp(step).strftime("%d%b%Y %H:%M:%S"))
-
-        tsc.values = avg_values_List
-        tsc.numberValues = len(tsc.values)
-        tsc.times = times_List
-        # tsc.startDateTime = times_List[0]
         
-        with HecDss.Open(dss_file) as fid:
+        # zip the two lists together to create a list of tuples.
+        times_and_values = list(zip(times_List, avg_values_List))
+        # only replace a nan with 0 if it is the first value in the list. This ensures the start time is respected even if it starts with a nan.
+        if np.isnan(times_and_values[0][1]):
+            # replace the tuple ordinate with the time unchanged, and then a 0 for the value.
+            times_and_values[0] = (times_and_values[0][0], 0)
+        # remove any other ordinate from the tuple for both value and time if the value is nan.
+        # since the DSS record is irregular, simply removing the missing data will ensure np.nan is not written to the DSS, which causes it to write a bad character.
+        # this could potentially be better handled by forcing np.nan to equal the noData value that DSS uses.
+        times_and_values = [(x[0], x[1]) for x in times_and_values if not np.isnan(x[1])]
+
+        # set times as the first element in the tuple.
+        tsc.times = [x[0] for x in times_and_values]
+        # tsc.startDateTime = times_List[0]
+        # set values as the second element in the tuple.
+        tsc.values = [x[1] for x in times_and_values]
+        tsc.numberValues = len(tsc.values)
+        
+        with HecDss.Open(output_file) as fid:
             status = fid.put_ts(tsc)
+        print("DSS File Written.")
     
     def __write_output_hdf(
         self, output_file : str, time : np.ndarray, data : np.ndarray, hdf_fn : str, ras_startTime : str, ras_endTime: str
@@ -466,14 +533,6 @@ class Extract:
         import h5py
 
         print (f'Updating the downstream boundary condtion timeseries for: {hdf_fn}.')
-
-        # pickle data and time for testing.
-        # import pickle
-        # with open('/twi/work/projects/p00667_louisiana_rtf/ras/lffs/louisiana_real_time_forecasting/src/system/scripts/dev/temp/extract_pointfile_data.pickle', 'wb') as handle:
-        #     pickle.dump(data, handle, protocol=pickle.HIGHEST_PROTOCOL)
-        # with open('/twi/work/projects/p00667_louisiana_rtf/ras/lffs/louisiana_real_time_forecasting/src/system/scripts/dev/temp/extract_pointfile_time.pickle', 'wb') as handle:
-        #     pickle.dump(time, handle, protocol=pickle.HIGHEST_PROTOCOL)
-
         
         with h5py.File(hdf_fn,  "a") as hf:
         # Ensure Results dataset is removed from HDF file. RAS unsteady solver will not run if Results dataset present.
@@ -575,7 +634,7 @@ class Extract:
             del hf[hdf_temp_path]
         
 
-    def extract(self, output_file, output_format, aPart=None, hdf_fn=None, ras_startTime=None, ras_endTime=None, ) -> None:
+    def extract(self, output_file, output_format, event=None, json_start=None, hdf_fn=None, ras_startTime=None, ras_endTime=None ) -> None:
 
         if "transpose" in self.__variable:
             time, data = self.__extract_from_transpose_variable()
@@ -584,9 +643,11 @@ class Extract:
 
         if output_format == "netcdf":
             self.__write_output_netcdf(output_file, time, data)
+        elif output_format == "json":
+            self.__write_output_json(output_file, time, data, event, json_start)
         elif output_format == "csv":
             self.__write_output_csv(output_file, time, data)
         elif output_format == "dss":
-            self.__write_output_dss(output_file, time, data, aPart)
+            self.__write_output_dss(output_file, time, data, event)
         elif output_format == "ras":
             self.__write_output_hdf(output_file, time, data, hdf_fn, ras_startTime, ras_endTime)
