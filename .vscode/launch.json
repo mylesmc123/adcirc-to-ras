@@ -118,6 +118,50 @@
       ]
     },
     {
+      "name": "Wind ASCII to NetCDF: GLO - Ike",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "adcirc2hec_wind.py",
+      "console": "integratedTerminal",
+      "args": [
+        "--input",
+        "/mnt/v/projects/p00659_dec_glo_phase3/01_processing/ADCIRC_for_RAS/wind/Ike/CTXCS_TP_0009_HIS_Tides_1_SLC_0_RFC_0_WAV_1_GCP_S2G03BE01_fort.74/CTXCS_TP_0009_HIS_Tides_1_SLC_0_RFC_0_WAV_1_GCP_S2G03BE01_fort.74",
+        "--output",
+        "/mnt/v/projects/p00659_dec_glo_phase3/01_processing/ADCIRC_for_RAS/wind/Ike/CTXCS_TP_0009_HIS_Tides_1_SLC_0_RFC_0_WAV_1_GCP_S2G03BE01_fort.74.nc",
+        "--resolution",
+        "0.1",
+        "--bounds",
+        "-95.33",
+        "29",
+        "-93.5",
+        "30",
+        "--mesh",
+        "/mnt/w/users/mmcmanus/adcirc_to_ras/S2G_new_lidar_full_roads_PAOF_NoProjects_v7.grd"
+      ]
+    },
+    {
+      "name": "Wind ASCII to NetCDF: GLO - Rita",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "adcirc2hec_wind.py",
+      "console": "integratedTerminal",
+      "args": [
+        "--input",
+        "/mnt/v/projects/p00659_dec_glo_phase3/01_processing/ADCIRC_for_RAS/wind/Rita/CTXCS_TP_0007_HIS_Tides_1_SLC_0_RFC_0_WAV_1_GCP_S2G03BE01_fort.74/CTXCS_TP_0007_HIS_Tides_1_SLC_0_RFC_0_WAV_1_GCP_S2G03BE01_fort.74",
+        "--output",
+        "/mnt/v/projects/p00659_dec_glo_phase3/01_processing/ADCIRC_for_RAS/wind/Rita/CTXCS_TP_0007_HIS_Tides_1_SLC_0_RFC_0_WAV_1_GCP_S2G03BE01_fort.74.nc",
+        "--resolution",
+        "0.1",
+        "--bounds",
+        "-95.33",
+        "29",
+        "-93.5",
+        "30",
+        "--mesh",
+        "/mnt/w/users/mmcmanus/adcirc_to_ras/S2G_new_lidar_full_roads_PAOF_NoProjects_v7.grd"
+      ]
+    },
+    {
       "name": "Wind ADCIRC nc to RAS nc: SLAMM - Ida",
       "type": "debugpy",
       "request": "launch",
