@@ -38,6 +38,8 @@ Then, the following script was used to create the DSS files: https://github.com/
 The output dss files are created as one dss file per downstream Segment. Each Segment dss file contains each storm event.
 output dss timeseries: V:\projects\p00832_ocd_2023_latz_hr\01_processing\ADCIRC2RAS\downstream_boundary
 
+Used HMS 4.12 Vortex Jython API on windows.
+
 The segment dss files were combined to make one dss file for all segments and all events: "V:\projects\p00832_ocd_2023_latz_hr\01_processing\ADCIRC2RAS\Downstream_WSE_AllSegments_AllEvents.dss"
 
 ![image](https://github.com/mylesmc123/adcirc-to-ras/assets/64209352/3b69be25-a579-49bd-8eb6-4aa1f4f3d8c7)

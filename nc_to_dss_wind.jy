@@ -5,8 +5,8 @@ from mil.army.usace.hec.vortex.geo import WktFactory
 import glob
 import os
 
-# cd C:\Apps\HEC-HMS-4.10-beta.9
-# HEC-HMS.cmd -script "C:\py\lwi_jpm_hms_runner\vortex_import_JPM_Rain.jy"
+# cd C:\Apps\hec-hms-4.12-beta.6-win-x64
+# HEC-HMS.cmd -script "Z:\py\adcirc-to-ras\nc_to_dss_wind.jy"
 
 variables = ['wind_u', 'wind_v']
 
@@ -21,10 +21,12 @@ geo_options = {
     'resamplingMethod': 'Bilinear'
 }
 
-in_dir = r"V:\projects\p00832_ocd_2023_latz_hr\01_processing\ADCIRC2RAS\wind\nc"
+# in_dir = r"V:\projects\p00832_ocd_2023_latz_hr\01_processing\ADCIRC2RAS\wind\nc"
+in_dir = r"V:\projects\p00832_ocd_2023_latz_hr\01_processing\ADCIRC2RAS\wind"
 f = glob.glob(in_dir+"/*.nc")
 
-out_dir = r"V:\projects\p00832_ocd_2023_latz_hr\01_processing\ADCIRC2RAS\wind\dss"
+# out_dir = r"V:\projects\p00832_ocd_2023_latz_hr\01_processing\ADCIRC2RAS\wind\dss"
+out_dir = r"V:\projects\p00832_ocd_2023_latz_hr\01_processing\ADCIRC2RAS\wind"
 
 for afile in f:
     head, tail = os.path.split(afile)
