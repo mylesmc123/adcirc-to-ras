@@ -462,16 +462,18 @@ class HecWindFile:
     Class to generate HEC wind files
     """
 
-    def __init__(self, input_file: str, mesh_file: str, output_file: str):
+    def __init__(self, input_file: str, ref_time: datetime, mesh_file: str, output_file: str):
         """
         Constructor
 
         Args:
             input_file: ADCIRC netcdf file
+            ref_time: Reference time for the ADCIRC simulation if input is not netCDF
             mesh_file: ADCIRC mesh file if input is not netCDF
             output_file: HEC wind file in netcdf format
         """
         self.__input_file = input_file
+        self.__ref_time = ref_time
         self.__mesh_file = mesh_file
         self.__output_file = output_file
 
@@ -519,8 +521,13 @@ class HecWindFile:
             mesh = AdcircMesh(self.__mesh_file)
 
         n_steps = dataset.n_time_steps()
-        reference_time = dataset._AdcircResult__ref_time.split(" ")[-2:]
-        reference_time = " ".join(reference_time)
+
+        # if netCDF, set reference time from the dataset. else use the one provided in args_ref_time.
+        if hasattr(dataset, "_AdcircResult__ref_time"):
+            reference_time = dataset._AdcircResult__ref_time.split(" ")[-2:]
+            reference_time = " ".join(reference_time)
+        else:
+            reference_time = self.__ref_time
         reference_time = datetime.strptime(reference_time, "%Y-%m-%d %H:%M:%S")
 
         # move reference time back 10 minutes
@@ -680,8 +687,22 @@ def adcirc2hec_wind_main():
         required=False,
         default=None,
     )
+    parser.add_argument(
+        "--ref_time",
+        help="Reference time for the ADCIRC simulation",
+        type=datetime.fromisoformat,
+        required=False
+    )
 
     args = parser.parse_args()
+
+    # if args.input is not of type netCDF, then args.mesh & args.ref_time must be provided.
+    if args.input[-3:] != ".nc" or args.input[-3:] != ".nc4":
+        print(f"\n{args.input} does not have extension of .nc or .nc4.\nConsidered to be an ASCII ADCIRC file.\n")
+        if args.mesh is None: 
+            parser.error("Mesh file is required for ASCII ADCIRC files")
+        if args.ref_time is None:
+            parser.error("Reference time is required for ASCII ADCIRC files")
 
     x0 = args.bounds[0]
     y0 = args.bounds[1]
@@ -693,7 +714,7 @@ def adcirc2hec_wind_main():
     y_min = min(y0, y1)
     y_max = max(y0, y1)
 
-    r = HecWindFile(args.input, args.mesh, args.output)
+    r = HecWindFile(args.input, args.ref_time, args.mesh, args.output)
     r.write(args.resolution, x_min, y_min, x_max, y_max)
 
 

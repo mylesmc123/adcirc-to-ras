@@ -105,7 +105,7 @@
         "--input",
         "/mnt/v/projects/p00659_dec_glo_phase3/00_collection/ADCIRC_CTXCS_S2G_CSTORM/CTXCS_TP_0011_HIS_Tides_1_SLC_0_RFC_0_WAV_1_GCP_S2G03BE01_fort.74",
         "--output",
-        "/mnt/v/projects/p00659_dec_glo_phase3/00_collection/ADCIRC_CTXCS_S2G_CSTORM/CTXCS_TP_0011_HIS_Tides_1_SLC_0_RFC_0_WAV_1_GCP_S2G03BE01_fort.74_5.nc",
+        "/mnt/v/projects/p00659_dec_glo_phase3/00_collection/ADCIRC_CTXCS_S2G_CSTORM/CTXCS_TP_0011_HIS_Tides_1_SLC_0_RFC_0_WAV_1_GCP_S2G03BE01_fort.74_6.nc",
         "--resolution",
         "0.1",
         "--bounds",
@@ -114,7 +114,9 @@
         "-93.5",
         "30",
         "--mesh",
-        "/mnt/w/users/mmcmanus/adcirc_to_ras/S2G_new_lidar_full_roads_PAOF_NoProjects_v7.grd"
+        "/mnt/w/users/mmcmanus/adcirc_to_ras/S2G_new_lidar_full_roads_PAOF_NoProjects_v7.grd",
+        "--ref_time",
+        "2017-08-18 00:30:00"
       ]
     },
     {
@@ -136,7 +138,9 @@
         "-93.5",
         "30",
         "--mesh",
-        "/mnt/w/users/mmcmanus/adcirc_to_ras/S2G_new_lidar_full_roads_PAOF_NoProjects_v7.grd"
+        "/mnt/w/users/mmcmanus/adcirc_to_ras/S2G_new_lidar_full_roads_PAOF_NoProjects_v7.grd",
+        "--ref_time",
+        "2008-09-05 18:30:00"
       ]
     },
     {
@@ -158,7 +162,9 @@
         "-93.5",
         "30",
         "--mesh",
-        "/mnt/w/users/mmcmanus/adcirc_to_ras/S2G_new_lidar_full_roads_PAOF_NoProjects_v7.grd"
+        "/mnt/w/users/mmcmanus/adcirc_to_ras/S2G_new_lidar_full_roads_PAOF_NoProjects_v7.grd",
+        "--ref_time",
+        "2005-09-18 00:30:00"
       ]
     },
     {
