@@ -526,9 +526,9 @@ class HecWindFile:
         if hasattr(dataset, "_AdcircResult__ref_time"):
             reference_time = dataset._AdcircResult__ref_time.split(" ")[-2:]
             reference_time = " ".join(reference_time)
+            reference_time = datetime.strptime(reference_time, "%Y-%m-%d %H:%M:%S")
         else:
             reference_time = self.__ref_time
-        reference_time = datetime.strptime(reference_time, "%Y-%m-%d %H:%M:%S")
 
         # move reference time back 10 minutes
         # reference_time = reference_time - timedelta(minutes=10)

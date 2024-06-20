@@ -105,7 +105,7 @@
         "--input",
         "/mnt/v/projects/p00659_dec_glo_phase3/00_collection/ADCIRC_CTXCS_S2G_CSTORM/CTXCS_TP_0011_HIS_Tides_1_SLC_0_RFC_0_WAV_1_GCP_S2G03BE01_fort.74",
         "--output",
-        "/mnt/v/projects/p00659_dec_glo_phase3/00_collection/ADCIRC_CTXCS_S2G_CSTORM/CTXCS_TP_0011_HIS_Tides_1_SLC_0_RFC_0_WAV_1_GCP_S2G03BE01_fort.74_6.nc",
+        "/mnt/v/projects/p00659_dec_glo_phase3/01_processing/ADCIRC_for_RAS/wind/Harvey/CTXCS_TP_0011_HIS_Tides_1_SLC_0_RFC_0_WAV_1_GCP_S2G03BE01_fort.74_Minus15.nc",
         "--resolution",
         "0.1",
         "--bounds",
@@ -116,7 +116,8 @@
         "--mesh",
         "/mnt/w/users/mmcmanus/adcirc_to_ras/S2G_new_lidar_full_roads_PAOF_NoProjects_v7.grd",
         "--ref_time",
-        "2017-08-18 00:30:00"
+        // "2017-08-18 00:00:00" // original
+        "2017-08-17 23:45:00" // minus 15
       ]
     },
     {
@@ -129,7 +130,7 @@
         "--input",
         "/mnt/v/projects/p00659_dec_glo_phase3/01_processing/ADCIRC_for_RAS/wind/Ike/CTXCS_TP_0009_HIS_Tides_1_SLC_0_RFC_0_WAV_1_GCP_S2G03BE01_fort.74/CTXCS_TP_0009_HIS_Tides_1_SLC_0_RFC_0_WAV_1_GCP_S2G03BE01_fort.74",
         "--output",
-        "/mnt/v/projects/p00659_dec_glo_phase3/01_processing/ADCIRC_for_RAS/wind/Ike/CTXCS_TP_0009_HIS_Tides_1_SLC_0_RFC_0_WAV_1_GCP_S2G03BE01_fort.74.nc",
+        "/mnt/v/projects/p00659_dec_glo_phase3/01_processing/ADCIRC_for_RAS/wind/Ike/CTXCS_TP_0009_HIS_Tides_1_SLC_0_RFC_0_WAV_1_GCP_S2G03BE01_fort.74_Minus15_Minus15.nc",
         "--resolution",
         "0.1",
         "--bounds",
@@ -140,7 +141,8 @@
         "--mesh",
         "/mnt/w/users/mmcmanus/adcirc_to_ras/S2G_new_lidar_full_roads_PAOF_NoProjects_v7.grd",
         "--ref_time",
-        "2008-09-05 18:30:00"
+        // "2008-09-05 18:30:00" // orignal
+        "2008-09-05 18:15:00" // minus 15
       ]
     },
     {
@@ -153,7 +155,7 @@
         "--input",
         "/mnt/v/projects/p00659_dec_glo_phase3/01_processing/ADCIRC_for_RAS/wind/Rita/CTXCS_TP_0007_HIS_Tides_1_SLC_0_RFC_0_WAV_1_GCP_S2G03BE01_fort.74/CTXCS_TP_0007_HIS_Tides_1_SLC_0_RFC_0_WAV_1_GCP_S2G03BE01_fort.74",
         "--output",
-        "/mnt/v/projects/p00659_dec_glo_phase3/01_processing/ADCIRC_for_RAS/wind/Rita/CTXCS_TP_0007_HIS_Tides_1_SLC_0_RFC_0_WAV_1_GCP_S2G03BE01_fort.74.nc",
+        "/mnt/v/projects/p00659_dec_glo_phase3/01_processing/ADCIRC_for_RAS/wind/Rita/CTXCS_TP_0007_HIS_Tides_1_SLC_0_RFC_0_WAV_1_GCP_S2G03BE01_fort.74_Minus15.nc",
         "--resolution",
         "0.1",
         "--bounds",
@@ -164,7 +166,8 @@
         "--mesh",
         "/mnt/w/users/mmcmanus/adcirc_to_ras/S2G_new_lidar_full_roads_PAOF_NoProjects_v7.grd",
         "--ref_time",
-        "2005-09-18 00:30:00"
+        // "2005-09-18 00:30:00" // orignal
+        "2005-09-18 00:15:00" // minus 15
       ]
     },
     {
